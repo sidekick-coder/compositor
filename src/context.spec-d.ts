@@ -3,7 +3,7 @@ import { createContext } from './context.js'
 
 
 describe('context', () => {
-    it('should create context with basic type', async () => {
+    it('should create simple context type', async () => {
         const context = await createContext(
             async () => ({ user: 'John Doe' }),
         )

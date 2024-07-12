@@ -6,11 +6,11 @@ export type Middleware = (context: Context) => Promise<Context>
 
 export type ResolvedContext<M extends Middleware> = Awaited<ReturnType<M>>
 
-type MergeTypes<T extends Middleware[]> = 
+export type MiddlewaresResults<T extends Middleware[]> = 
     T extends [infer First, ...infer Rest] ? 
         First extends Middleware ? 
             Rest extends Middleware[] ? 
-                MergeTypes<Rest> & ResolvedContext<First> : 
+                MiddlewaresResults<Rest> & ResolvedContext<First> : 
                 never : 
             never : 
         {}
@@ -24,5 +24,5 @@ export async function createContext<T extends Middleware[]>(...middlewares: T){
         Object.assign(context, middlewareContext)
     }
 
-    return context as MergeTypes<T>
+    return context as MiddlewaresResults<T>
 }
