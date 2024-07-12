@@ -4,5 +4,8 @@ export default defineConfig({
     test: {
         watch: false,
         reporters: 'verbose',
+        typecheck: {
+            // include: ['src/**/*.spec-d.ts'],
+        }
     },
 })
