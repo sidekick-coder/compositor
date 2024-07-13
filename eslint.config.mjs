@@ -7,10 +7,12 @@ export default tsEslint.config(
     pluginJs.configs.recommended,
     ...tsEslint.configs.recommended,
     { languageOptions: { globals: globals.node } },
+    { files: ["packages/**/**/*.ts"] },
+    { ignores: ['packages/**/dist'] },
     {
-        files: ["packages/core/**/*.ts"],
         rules: {
             '@typescript-eslint/no-explicit-any': 'off',
+            '@typescript-eslint/no-unused-vars': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
         }
     }
 );
