@@ -1,5 +1,5 @@
 {
-    "name": "core",
+    "name": "@sugar-middleware/core",
     "version": "0.0.1",
     "description": "Typescript friendly middleware implementation for express",
     "author": "henrique <henriqueoliwork@gmail.com>",

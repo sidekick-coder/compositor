@@ -1,7 +1,7 @@
 import { describe, it, expectTypeOf } from 'vitest'
 import { createApp } from './app'
 import express, { Request, Response } from 'express'
-import { MiddlewareContext, MiddlewareListContext } from 'core'
+import { MiddlewareContext, MiddlewareListContext } from '@sugar-middleware/core'
 
 describe('app', () => {
     it('should request & response be defined in base context', async () => {

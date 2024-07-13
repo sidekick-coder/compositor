@@ -1,5 +1,5 @@
 import type { Application, Request, Response } from "express";
-import { createRunner } from "core";
+import { createRunner } from "@sugar-middleware/core";
 
 type Methods = 'get' | 'post' | 'put' | 'patch' | 'delete'
 
