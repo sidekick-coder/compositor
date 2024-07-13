@@ -23,4 +23,15 @@ describe('context', () => {
 
         expect(context).toEqual({ user: 'John Doe', role: 'admin' })
     })
+
+    it('should create context with base context', async () => {
+        const context = await createContext({
+            baseContext: { version: '1.0.0' },
+            middlewares: [
+                async () => ({ user: 'John' })
+            ]
+        })
+
+        expect(context).toEqual({ version: '1.0.0', user: 'John' })
+    })
 })

@@ -1,16 +1,23 @@
 {
-  "name": "core",
-  "version": "0.0.1",
-  "description": "Typescript friendly middleware implementation for express",
-  "author": "henrique <henriqueoliwork@gmail.com>",
-  "license": "MIT",
-  "keywords": [
-    "middleware",
-    "typescript"
-  ],
-  "scripts": {
-    "build": "tsup",
-    "test": "vitest  --typecheck",
-    "lint": "eslint ."
-  }
+    "name": "core",
+    "version": "0.0.1",
+    "description": "Typescript friendly middleware implementation for express",
+    "author": "henrique <henriqueoliwork@gmail.com>",
+    "license": "MIT",
+    "keywords": [
+        "middleware",
+        "typescript"
+    ],
+    "exports": {
+        ".": {
+            "import": "./dist/index.mjs",
+            "require": "./dist/index.js",
+            "types": "./dist/index.d.ts"
+        }
+    },
+    "scripts": {
+        "build": "tsup",
+        "test": "vitest  --typecheck",
+        "lint": "eslint ."
+    }
 }

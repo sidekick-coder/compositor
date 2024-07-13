@@ -1,27 +1,34 @@
-import { describe, it, expect, expectTypeOf } from 'vitest'
+import { describe, it, expectTypeOf } from 'vitest'
 import { createRunner } from './runner'
 
 describe('runner', () => {
     it('should create simple runner', async () => {
-        expect.assertions(1)
-
         await createRunner({
             middlewares: [async () => ({ user: 'John Doe' })]
         })
         .run(ctx => {
-            expectTypeOf(ctx).toEqualTypeOf<{ user: string }>()
+            expectTypeOf(ctx.user).toEqualTypeOf<string>()
+        })
+    })
+    
+    it('should create runner with base context', async () => {
+        await createRunner({
+            baseContext: { version: '1.0.0' },
+            middlewares: [async () => ({ user: 'John Doe' })]
+        })
+        .run(ctx => {
+            expectTypeOf(ctx.user).toEqualTypeOf<string>()
+            expectTypeOf(ctx.version).toEqualTypeOf<string>()
         })
     })
     
     it('should add middleware "use" method', async () => {
-        expect.assertions(1)
-
         await createRunner({
             middlewares: []
         })
         .use(async () => ({ user: 'John Doe' }))
         .run(ctx => {
-            expectTypeOf(ctx).toEqualTypeOf<{ user: string }>()
+            expectTypeOf(ctx.user).toEqualTypeOf<string>()
         })
     })
 

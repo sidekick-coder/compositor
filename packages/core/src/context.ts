@@ -1,4 +1,4 @@
-interface Context {
+export interface Context {
     [key: string]: any
 }
 
@@ -11,16 +11,19 @@ type UnionToIntersection<U> =
 
 export type MiddlewaresResults<T extends Middleware[]> = UnionToIntersection<MiddlewareResolvedContext<T[number]>>
 
-interface Options<T extends Middleware[] = Middleware[]>{   
-    middlewares: T
+export interface ContextOptions<C extends Context = Context, M extends Middleware[] = Middleware[]>{   
+    baseContext?: C
+    middlewares: M
 }
 
-export async function createContext<M extends Middleware[]>(options: Options<M>){
-    const context: Context = {}
+export async function createContext<C extends Context, M extends Middleware[]>(options: ContextOptions<C, M>){
+    const context: any = {
+        ...options.baseContext
+    }
 
     for await (const middleware of options.middlewares){
         Object.assign(context, await middleware(context))
     }
 
-    return context as MiddlewaresResults<M>
+    return context as C & MiddlewaresResults<M>
 }

@@ -10,7 +10,7 @@ describe('context', () => {
             ]
         })
 
-        expectTypeOf(context).toEqualTypeOf<{ user: string }>()
+        expectTypeOf(context.user).toEqualTypeOf<string>()
     })
     
     it('should create context with a const type', async () => {
@@ -35,6 +35,18 @@ describe('context', () => {
         expectTypeOf(context.first).toEqualTypeOf<string>()
         expectTypeOf(context.second).toEqualTypeOf<string>()
         expectTypeOf(context.third).toEqualTypeOf<string>()
+    })
+
+    it('should create context with base context', async () => {
+        const context = await createContext({
+            baseContext: { version: '1.0.0' },
+            middlewares: [
+                async () => ({ user: 'John' })
+            ]
+        })
+
+        expectTypeOf(context.version).toEqualTypeOf<string>()
+        expectTypeOf(context.user).toEqualTypeOf<string>()
     })
 
 })
