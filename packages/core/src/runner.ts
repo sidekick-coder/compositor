@@ -16,6 +16,7 @@ export interface Runner<C extends Context = Context> {
     run(cb: RunnerCallback<C>): Promise<any>
     use<M2 extends Middleware>(middleware: M2): Runner<C & MiddlewareContext<M2>>
     mount(cb: RunnerCallback<C>): () => Promise<any>
+    clone(): Runner<C>
 
     // ts only
     infer<C2 extends Context, M extends Middleware[]>(): Runner<C2 & MiddlewareListContext<M>>
@@ -66,6 +67,11 @@ export function createRunner<C extends Context>(baseContext?: C): Runner<C> {
         return mounted()
     }
 
+    function clone(){
+        return createRunner(baseContext)
+            .pushAll(middlewares)
+    }
+
     function infer<C2 extends Context, M extends Middleware>(){
         return this as Runner<C2 & MiddlewareContext<M>>
     }
@@ -79,6 +85,7 @@ export function createRunner<C extends Context>(baseContext?: C): Runner<C> {
         run,
         use,
         mount,
+        clone,
 
         // ts only
         infer,

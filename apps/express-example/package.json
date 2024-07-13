@@ -1,0 +1,10 @@
+{
+  "name": "express-example",
+  "scripts": {
+    "start": "tsx src/index.ts"
+  },
+  "dependencies": {
+    "@sugar-middleware/express": "^0.0.1",
+    "express": "^4.19.2"
+  }
+}

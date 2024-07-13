@@ -7,7 +7,7 @@ export type Middleware<C = any> = (context: C) => Promise<any> | any
 export type MiddlewareContext<M extends Middleware> = Awaited<ReturnType<M>>
 
 type UnionToIntersection<U> = 
-  (U extends any ? (x: U)=>void : never) extends ((x: infer I)=>void) ? I : never
+  (U extends any ? (x: U) => void : never) extends ((x: infer I)=> void) ? I : never
 
 export type MiddlewareListContext<T extends Middleware[]> = UnionToIntersection<MiddlewareContext<T[number]>>
 

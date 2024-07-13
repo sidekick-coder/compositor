@@ -1,6 +1,7 @@
 import { describe, it, expect, expectTypeOf } from 'vitest'
 import { createApp, defineAppHandler } from './app'
 import { createRunner } from './runner'
+import { Context } from './context'
 
 describe('app', () => {
     it('should run context have app handle base context', async () => {
@@ -15,6 +16,27 @@ describe('app', () => {
 
         app.get('/').run((ctx) => {
             expectTypeOf(ctx.requestId).toEqualTypeOf<string>()
+        })
+    })
+
+    it('should have global middleware context with multiples middlewares', async () => {
+        expect.assertions(1)
+
+        const api = createApp({
+            handler: () => createRunner(),
+            middlewares: [
+                () => ({ requestId: '123' }),
+                () => ({ user: 'John' }),
+                // empty return
+                () => {
+                    return {} as Context
+                },
+            ],
+        })
+
+        await api.get('/').run(ctx => {
+            expectTypeOf(ctx.requestId).toEqualTypeOf<string>()
+            expectTypeOf(ctx.user).toEqualTypeOf<string>()
         })
     })
     

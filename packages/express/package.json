@@ -8,8 +8,16 @@
         "middleware",
         "typescript"
     ],
+    "exports": {
+        ".": {
+            "import": "./dist/index.mjs",
+            "require": "./dist/index.js",
+            "types": "./dist/index.d.ts"
+        }
+    },
     "scripts": {
-        "test": "vitest --typecheck"
+        "test": "vitest --typecheck",
+        "build": "tsup"
     },
     "dependencies": {
         "@sugar-middleware/core": "^0.0.1"

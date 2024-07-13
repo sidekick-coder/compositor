@@ -66,6 +66,23 @@ describe('app', () => {
             expect(ctx.requestId).toEqual('123')
         })
     })
+    
+    it('should have global middleware context with multiples middlewares', async () => {
+        expect.assertions(1)
+
+        const api = createApp({
+            handler: () => createRunner(),
+            middlewares: [
+                () => ({ requestId: '123' }),
+                () => ({ user: 'John' }),
+            ],
+        })
+
+        await api.get('/').run(ctx => {
+            expect(ctx.requestId).toEqual('123')
+            expect(ctx.user).toEqual('John')
+        })
+    })
 
     it('should have handler base context', async () => {
         expect.assertions(1)
