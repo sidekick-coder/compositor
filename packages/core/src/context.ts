@@ -16,9 +16,9 @@ interface Options<T extends Middleware[] = Middleware[]>{
 }
 
 export async function createContext<M extends Middleware[]>(options: Options<M>){
-    let context: Context = {}
+    const context: Context = {}
 
-    for await (const [key, middleware] of Object.entries(options.middlewares)){
+    for await (const middleware of options.middlewares){
         Object.assign(context, await middleware(context))
     }
 

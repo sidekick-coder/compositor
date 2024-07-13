@@ -1,5 +1,5 @@
 {
-  "name": "core",
+  "name": "express",
   "version": "0.0.1",
   "description": "Typescript friendly middleware implementation for express",
   "author": "henrique <henriqueoliwork@gmail.com>",
@@ -8,9 +8,6 @@
     "middleware",
     "typescript"
   ],
-  "scripts": {
-    "build": "tsup",
-    "test": "vitest  --typecheck",
-    "lint": "eslint ."
-  }
+  "devDependencies": {},
+  "scripts": {}
 }

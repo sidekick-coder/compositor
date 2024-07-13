@@ -1,5 +1,4 @@
-import { describe, it, expect, expectTypeOf } from 'vitest'
-import { createRunner } from './runner'
+import { describe, it, expect } from 'vitest'
 import { createApi } from './api'
 
 describe('api', () => {
