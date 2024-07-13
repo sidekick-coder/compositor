@@ -1,16 +1,14 @@
 import { createContext } from "./context";
-import type { Context, ContextOptions, Middleware, MiddlewaresResults } from "./context";
+import type { Context, ContextOptions, Middleware, MiddlewareListContext } from "./context";
 
-export type Runner = ReturnType<typeof createRunner>
+export type Runner<C extends Context, M extends Middleware[]> = ReturnType<typeof createRunner<C, M>>
 
 interface RunnerCallback<C extends Context, M extends Middleware[]>{
-    (ctx: C & MiddlewaresResults<M>): any
+    (ctx: C & MiddlewareListContext<M>): any
 }
 
 export function createRunner<C extends Context, M extends Middleware[]>(options: ContextOptions<C, M>){
     const middlewares = options.middlewares.slice() as M
-
-    
 
     function push<M2 extends Middleware>(middleware: M2){
         middlewares.push(middleware)
