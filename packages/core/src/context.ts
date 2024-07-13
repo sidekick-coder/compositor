@@ -2,7 +2,7 @@ export interface Context {
     [key: string]: any
 }
 
-export type Middleware<C = any> = (context: C) => Promise<any>
+export type Middleware<C = any> = (context: C) => Promise<any> | any
 
 export type MiddlewareContext<M extends Middleware> = Awaited<ReturnType<M>>
 
