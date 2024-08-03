@@ -5,7 +5,7 @@ import { createContext } from './context'
 describe('context', () => {
     it('should create simple context', async () => {
         const context = await createContext({
-            middlewares: [
+            modifiers: [
                 async () => ({ user: 'John Doe' }),
             ]
         })
@@ -15,7 +15,7 @@ describe('context', () => {
 
     it('should create context with multiple properties', async () => {
         const context = await createContext({
-            middlewares: [
+            modifiers: [
                 async () => ({ user: 'John Doe' }),
                 async () => ({ role: 'admin' }),
             ]
@@ -26,8 +26,8 @@ describe('context', () => {
 
     it('should create context with base context', async () => {
         const context = await createContext({
-            baseContext: { version: '1.0.0' },
-            middlewares: [
+            initial: { version: '1.0.0' },
+            modifiers: [
                 async () => ({ user: 'John' })
             ]
         })

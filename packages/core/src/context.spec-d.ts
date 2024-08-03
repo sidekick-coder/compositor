@@ -5,7 +5,7 @@ import { createContext } from './context.js'
 describe('context', () => {
     it('should create simple context type', async () => {
         const context = await createContext({
-            middlewares: [
+            modifiers: [
                 async () => ({ user: 'John Doe' })
             ]
         })
@@ -15,7 +15,7 @@ describe('context', () => {
     
     it('should create context with a const type', async () => {
         const context = await createContext({
-            middlewares: [
+            modifiers: [
                 async () => ({ role: 'admin' as 'admin' | 'user' })
             ]
         })
@@ -25,7 +25,7 @@ describe('context', () => {
 
     it('should create context with a union type', async () => {
         const context = await createContext({
-            middlewares: [
+            modifiers: [
                 async () => ({ first: 'John' }),
                 async () => ({ second: 'Doe' }),
                 async () => ({ third: 'Smith' })
@@ -37,10 +37,10 @@ describe('context', () => {
         expectTypeOf(context.third).toEqualTypeOf<string>()
     })
 
-    it('should create context with base context', async () => {
+    it('should create context with initial context', async () => {
         const context = await createContext({
-            baseContext: { version: '1.0.0' },
-            middlewares: [
+            initial: { version: '1.0.0' },
+            modifiers: [
                 async () => ({ user: 'John' })
             ]
         })

@@ -1,7 +1,7 @@
 {
-    "name": "@sugar-middleware/core",
+    "name": "@compositor/core",
     "version": "0.0.1",
-    "description": "Typescript friendly middleware implementation for express",
+    "description": "Utilities to implement compositions functions",
     "author": "henrique <henriqueoliwork@gmail.com>",
     "license": "MIT",
     "keywords": [

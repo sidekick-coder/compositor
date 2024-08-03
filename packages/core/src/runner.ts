@@ -1,6 +1,5 @@
-import { MiddlewareContext } from "../dist";
-import { createContext } from "./context";
-import type { Context, Middleware, MiddlewareListContext } from "./context";
+import { createContext } from './context';
+import type { Context, Modifier, ModifierContext, ModifierListContext } from './context';
 
 
 export interface RunnerCallback<C extends Context>{
@@ -9,42 +8,42 @@ export interface RunnerCallback<C extends Context>{
 
 export interface Runner<C extends Context = Context> {
     context: C
-    middlewares: Middleware[]
-    push<M2 extends Middleware>(middleware: M2): Runner<C & MiddlewareContext<M2>>
-    pushAll<M2 extends Middleware[]>(middlewares: M2): Runner<C & MiddlewareListContext<M2>>
-    unshift<M2 extends Middleware>(middleware: M2): Runner<C & MiddlewareContext<M2>>
+    modifiers: Modifier[]
+    push<M2 extends Modifier>(middleware: M2): Runner<C & ModifierContext<M2>>
+    pushAll<M2 extends Modifier[]>(modifiers: M2): Runner<C & ModifierListContext<M2>>
+    unshift<M2 extends Modifier>(middleware: M2): Runner<C & ModifierContext<M2>>
     run(cb: RunnerCallback<C>): Promise<any>
-    use<M2 extends Middleware>(middleware: M2): Runner<C & MiddlewareContext<M2>>
+    use<M2 extends Modifier>(middleware: M2): Runner<C & ModifierContext<M2>>
     mount(cb: RunnerCallback<C>): () => Promise<any>
     clone(): Runner<C>
 
     // ts only
-    infer<C2 extends Context, M extends Middleware[]>(): Runner<C2 & MiddlewareListContext<M>>
+    infer<C2 extends Context, M extends Modifier[]>(): Runner<C2 & ModifierListContext<M>>
 }
 
-export function createRunner<C extends Context>(baseContext?: C): Runner<C> {
-    const middlewares = [] as Middleware[]
+export function createRunner<C extends Context>(initial?: C): Runner<C> {
+    const modifiers = [] as Modifier[]
 
-    function push<M2 extends Middleware>(middleware: M2){
-        middlewares.push(middleware)
-
-        return this
-    }
-
-    function pushAll<M2 extends Middleware[]>(newMiddlewares: M2){
-        middlewares.push(...newMiddlewares)
+    function push<M2 extends Modifier>(middleware: M2){
+        modifiers.push(middleware)
 
         return this
     }
 
-    function unshift<M2 extends Middleware>(middleware: M2){
-        middlewares.unshift(middleware)
+    function pushAll<M2 extends Modifier[]>(newModifiers: M2){
+        modifiers.push(...newModifiers)
 
         return this
     }
 
-    function use<M2 extends Middleware>(middleware: M2){
-        middlewares.push(middleware)
+    function unshift<M2 extends Modifier>(middleware: M2){
+        modifiers.unshift(middleware)
+
+        return this
+    }
+
+    function use<M2 extends Modifier>(middleware: M2){
+        modifiers.push(middleware)
 
         return this
     }
@@ -52,8 +51,8 @@ export function createRunner<C extends Context>(baseContext?: C): Runner<C> {
     function mount(cb: RunnerCallback<C>){
         return async () => {
             const ctx = await createContext({
-                baseContext,
-                middlewares
+                initial,
+                modifiers
             })
     
             return cb(ctx)
@@ -68,17 +67,17 @@ export function createRunner<C extends Context>(baseContext?: C): Runner<C> {
     }
 
     function clone(){
-        return createRunner(baseContext)
-            .pushAll(middlewares)
+        return createRunner(initial)
+            .pushAll(modifiers)
     }
 
-    function infer<C2 extends Context, M extends Middleware>(){
-        return this as Runner<C2 & MiddlewareContext<M>>
+    function infer<C2 extends Context, M extends Modifier>(){
+        return this as Runner<C2 & ModifierContext<M>>
     }
 
     return {
-        context: baseContext as C,
-        middlewares,
+        context: initial as C,
+        modifiers,
         push,
         pushAll,
         unshift,
