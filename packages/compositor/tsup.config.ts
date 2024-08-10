@@ -1,5 +1,4 @@
 import { defineConfig } from 'tsup'
-import path from 'path'
 
 export default defineConfig({
     entry: ['src/index.ts'],
@@ -8,5 +7,4 @@ export default defineConfig({
     clean: true,
     dts: true,
     format: ['esm', 'cjs'],
-    tsconfig: path.resolve(__dirname, 'tsconfig.json'),
 })

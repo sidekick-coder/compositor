@@ -1,0 +1,38 @@
+{
+	"name": "@sidekick-coder/compositor",
+	"version": "0.0.1",
+	"description": "Utilities to implement compositions functions",
+	"author": "henrique <henrique@sidekick-coder.com>",
+	"license": "MIT",
+	"keywords": [
+		"composition",
+		"utils",
+		"composables",
+		"typescript"
+	],
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/sidekick-coder/compositor.git",
+		"directory": "packages/compositor"
+	},
+	"bugs": {
+		"url": "https://github.com/sidekick-coder/compositor/issues"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"exports": {
+		".": {
+			"import": "./dist/index.mjs",
+			"require": "./dist/index.js",
+			"types": "./dist/index.d.ts"
+		}
+	},
+	"files": ["dist", "README.md"],
+	"scripts": {
+		"build": "tsup",
+		"build:watch": "tsup --watch",
+		"test": "vitest  --typecheck",
+		"lint": "eslint ."
+	}
+}
