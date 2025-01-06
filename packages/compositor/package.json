@@ -1,6 +1,6 @@
 {
 	"name": "@sidekick-coder/compositor",
-	"version": "0.1.0",
+	"version": "0.1.2",
 	"description": "Utilities to implement compositions functions",
 	"author": "henrique <henrique@sidekick-coder.com>",
 	"license": "MIT",
@@ -36,6 +36,7 @@
 		"build": "tsup",
 		"build:watch": "tsup --watch",
 		"test": "vitest  --typecheck",
-		"lint": "eslint ."
+		"lint": "eslint .",
+		"prepublishOnly": "npm run build"
 	}
 }
