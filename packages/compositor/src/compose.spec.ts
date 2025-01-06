@@ -1,28 +1,21 @@
 import { describe, it, expect } from 'vitest'
-import { compose, composeAsync } from './compose'
+import { compose } from './compose'
 
 
 describe('compose', () => {
 	it('should exetend simple compose', async () => {
-		const makeUser = (name: string) => {
-			return {
-				name,
-			}
-		}
-
-		const addRole = (name: string) => ({
-			role: name === 'Jonny' ? 'admin' : 'customer'
+		const addRole = (ctx: { name: string }) => ({
+			role: ctx.name === 'Jonny' ? 'admin' : 'customer'
 		})
 
+		const make = (name: string) => compose([() => ({ name }), addRole])
 
-		const makeUserWithRole = compose(makeUser, [addRole])
-
-		expect(makeUserWithRole('Jonny')).toEqual({
+		expect(make('Jonny')).toEqual({
 			name: 'Jonny',
 			role: 'admin'
 		})
 
-		expect(makeUserWithRole('Jay')).toEqual({
+		expect(make('Jay')).toEqual({
 			name: 'Jay',
 			role: 'customer'
 		})
@@ -30,44 +23,35 @@ describe('compose', () => {
 	})
 
 	it('should exetend multiple times', async () => {
-		const makeUser = (name: string) => {
-			return {
-				name,
-			}
-		}
 
-		const addRole = (name: string) => ({
-			role: name === 'Jonny' ? 'admin' : 'customer'
+
+		const addRole = (ctx: { name: string }) => ({
+			role: ctx.name === 'Jonny' ? 'admin' : 'customer'
 		})
 
-		const addIsAdmin = (name: string) => ({
-			isAdmin: () => name === 'Jonny'
-		})
+        const addIsAdmin = (ctx: { role: string }) => ({
+            isAdmin: ctx.role === 'admin',
+        })
 
-		const makeAll = compose(makeUser, [addRole, addIsAdmin])
+		
+		const make = (name: string) => compose([() => ({ name }), addRole, addIsAdmin])
 
-		const user = makeAll('Jonny')
+		const user = make('Jonny')
 
 		expect(user.name).toEqual('Jonny')
 		expect(user.role).toEqual('admin')
-		expect(user.isAdmin()).toEqual(true)
+		expect(user.isAdmin).toEqual(true)
 	})
 
 	it('should exetend promise compose', async () => {
-		const makeUser = async (name: string) => {
-			return Promise.resolve({
-				name,
-			})
-		}
-
-		const addRole = async (name: string) => ({
-			role: name === 'Jonny' ? 'admin' : 'customer'
+		const addRole = async (ctx: { name: string }) => ({
+			role: ctx.name === 'Jonny' ? 'admin' : 'customer'
 		})
 
 
-		const makeAll = composeAsync(makeUser, [addRole])
+		const make = (name: string) => compose.async([() => ({ name }), addRole])
 
-		const user = await makeAll('Jonny')
+		const user = await make('Jonny')
 
 		expect(user.name).toEqual('Jonny')
 		expect(user.role).toEqual('admin')

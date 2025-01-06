@@ -12,29 +12,23 @@ export type ComposableResult<T extends Composable> = Awaited<ReturnType<T>>
 
 export type ComposableResultList<T extends Composable[]> = UnionToIntersection<ComposableResult<T[number]>>
 
-export function compose<Main extends Composable, Extras extends ComposableExtend<Main>>(main: Main, extras: Extras[]) {
-	return (...args: Parameters<Main>) => {
-		let result = main(...args)
+export function compose<T extends Composable>(composables: T[]) {
+		let result = {}
 
-		for (const fn of extras) {
-			result = Object.assign(result, fn(...args))
+		for (const fn of composables) {
+			result = Object.assign(result, fn(result))
 		}
 
-		return result as ComposableResultList<[Main, Extras]>
-	}
+		return result as ComposableResultList<[T]>
 }
 
-export function composeAsync<Main extends Composable, Extras extends ComposableExtend<Main>>(main: Main, extras: Extras[]) {
+compose.async = async function<T extends Composable>(composables: T[]) {
+		let result = {}
 
-	return async (...args: Parameters<Main>) => {
-		let result = await main(...args)
-
-		for await (const fn of extras) {
-			result = Object.assign(result, await fn(...args))
+		for await (const fn of composables) {
+			result = Object.assign(result, await fn(result))
 		}
 
-		return result as ComposableResultList<[Main, Extras]>
-	}
-
+		return result as ComposableResultList<[T]>
 }
 
