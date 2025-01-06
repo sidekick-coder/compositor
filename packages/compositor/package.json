@@ -1,6 +1,6 @@
 {
 	"name": "@sidekick-coder/compositor",
-	"version": "0.0.1",
+	"version": "0.1.0",
 	"description": "Utilities to implement compositions functions",
 	"author": "henrique <henrique@sidekick-coder.com>",
 	"license": "MIT",
@@ -28,7 +28,10 @@
 			"types": "./dist/index.d.ts"
 		}
 	},
-	"files": ["dist", "README.md"],
+	"files": [
+		"dist",
+		"README.md"
+	],
 	"scripts": {
 		"build": "tsup",
 		"build:watch": "tsup --watch",
