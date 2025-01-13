@@ -3,7 +3,7 @@ import { compose } from './compose'
 
 
 describe('compose', () => {
-	it('should exetend simple compose', async () => {
+	it('should compose simple', async () => {
 		const addRole = (ctx: { name: string }) => ({
 			role: ctx.name === 'Jonny' ? 'admin' : 'customer'
 		})
@@ -19,11 +19,22 @@ describe('compose', () => {
 			name: 'Jay',
 			role: 'customer'
 		})
-
 	})
 
-	it('should exetend multiple times', async () => {
+    it('should accept object and functions', () => {
+        const addRole = (ctx: { name: string }) => ({
+            role: ctx.name === 'Jonny' ? 'admin' : 'customer'
+        })
 
+        const make = (name: string) => compose([{ name }, addRole])
+
+        const user = make('Jonny')
+
+        expect(user.name).toEqual('Jonny')
+        expect(user.role).toEqual('admin')
+    })
+
+	it('should exetend multiple times', async () => {
 
 		const addRole = (ctx: { name: string }) => ({
 			role: ctx.name === 'Jonny' ? 'admin' : 'customer'
@@ -47,7 +58,6 @@ describe('compose', () => {
 		const addRole = async (ctx: { name: string }) => ({
 			role: ctx.name === 'Jonny' ? 'admin' : 'customer'
 		})
-
 
 		const make = (name: string) => compose.async([() => ({ name }), addRole])
 

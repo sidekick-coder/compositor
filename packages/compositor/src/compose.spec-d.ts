@@ -2,7 +2,7 @@ import { describe, it, expectTypeOf } from 'vitest'
 import { compose } from './compose'
 
 describe('compose', () => {
-	it('should exetend simple compose', async () => {
+	it('should simple compose', async () => {
 
 		const addRole = (name: string) => ({
 			role: name === 'Jonny' ? 'admin' : 'customer' as 'admin' | 'customer' 
@@ -17,8 +17,21 @@ describe('compose', () => {
 
 	})
 
+    it('should accept object and functions', () => {
+        const addRole = (ctx: { name: string }) => ({
+            role: ctx.name === 'Jonny' ? 'admin' : 'customer'
+        })
 
-	it('should exetend promise compose', async () => {
+        const make = (name: string) => compose([{ name }, addRole])
+
+        const user = make('Jonny')
+
+        expectTypeOf(user.name).toEqualTypeOf<string>()
+        expectTypeOf(user.role).toEqualTypeOf<string>()
+    })
+
+
+	it('should compose promise', async () => {
 		const addRole = (name: string) => ({
 			role: name === 'Jonny' ? 'admin' : 'customer'
 		})
@@ -28,6 +41,4 @@ describe('compose', () => {
 		expectTypeOf(make).toEqualTypeOf<(name: string) => Promise<{ name: string } & { role: string }>>()
 
 	})
-
-
 })
