@@ -1,3 +1,3 @@
 export * from './context';
-export * from './runner';
+export * from './chain';
 export * from './compose';
